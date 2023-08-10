@@ -1,4 +1,3 @@
-import os
 import whisper
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from decouple import config
@@ -21,9 +20,9 @@ def summarize(full_text, max_length):
     return tokenizer.decode(summary[0], skip_special_tokens=False)
 
 # append to a file with path specified in .env file
-def write_to_folder(text):
+def write_to_folder(audio_file,text):
     file1 = open(lecture_path, "a")  # append mode
-    file1.write(text + '\n')
+    file1.write(audio_file + ": " + text + '\n')
     file1.close()
 
 def main():
@@ -31,7 +30,7 @@ def main():
     transcript = transcribe(audio_file)
     summary = summarize(transcript, 20) # parameters: text, max length of summary
     print(summary)
-    write_to_folder(summary)
+    write_to_folder(audio_file, summary)
 
 if __name__ == "__main__":
     main()
